@@ -20,11 +20,8 @@ class ShopperTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        //call the load shopping lists method
+        loadShoppingLists()
     }
 
     //fetch ShoppingLists from Core Data
@@ -199,14 +196,24 @@ class ShopperTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        //if we're segueing to the Shopping List Table View Controller
+        if (segue.identifier == "ShoppingListItems"){
+            //get the index path for the row that was selected
+            //(0,0), (0,1), (0,2), etc.
+            let selectedRowIndex = self.tableView.indexPathForSelectedRow
+            
+            //create an instance of Shopping List Table View Controller
+            let shoppingListItem = segue.destination as! ShoppingListTableViewController
+            
+            //set the selected shopping list property of the Shopping List Table View Controller equal to the row of the index path
+            shoppingListItem.selectedShoppingList = shoppingLists[selectedRowIndex!.row]
+        }
     }
-    */
+    
 
 }
