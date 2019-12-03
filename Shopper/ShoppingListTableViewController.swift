@@ -92,6 +92,37 @@ class ShoppingListTableViewController: UITableViewController {
         loadShoppingListItems()
     }
     
+    func shoppingListDoneNotification(){
+        var done = true
+        
+        //loop through shopping list items
+        for item in shoppingListItems{
+            //check if any purchased attributes are false
+            if item.purchased == false{
+                //set done to false
+                done = false
+            }
+        }
+        
+        //check if done is true
+        if done == true{
+            //create an object that ontrols the content and the sound of hte notification
+            let content = UNMutableNotificationContent()
+            content.title = "Shopper"
+            content.body = "Shopping List Complete"
+            content.sound = UNNotificationSound.default
+            
+            //create trigger object that defines when the notification will be sent and if it should be sent repeatedly
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            
+            //create request object that is responsible for creating the notification
+            let request = UNNotificationRequest(identifier: "shopperIdentifier", content: content, trigger: trigger)
+            
+            //post the notification
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        }
+    }
+    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         //declare Text Fields variables for input of name, price, and quantity
         var nametextField = UITextField()
@@ -256,6 +287,8 @@ class ShoppingListTableViewController: UITableViewController {
         
         //call deselectRow method to allow update to be visible in tbale view controller
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        shoppingListDoneNotification()
     }
 
     
